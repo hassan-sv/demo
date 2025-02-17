@@ -1,0 +1,250 @@
+---
+title: Capstone bicyle data
+author: Taimur Hassan
+date: 2025-02-13
+output: html_document
+---
+![Alt text](https://github.com/hassan-sv/Project-Data-Analysis/blob/main/thumbnail.png)
+
+
+## About case study 
+
+This case study explores the usage patterns of Cyclistic, a bike-share company in Chicago, to understand how casual riders and annual members differ in their bike usage. The goal is to provide actionable insights to convert casual riders into annual members, ultimately driving the company’s growth
+This project is part of the Google Data Analytics Professional Certificate on [link](https://www.coursera.org/professional-certificates/google-data-analytics)
+
+## Step 1: Ask
+Company Background
+
+Cyclistic launched its bike-share program in 2016, offering over 5,800 bikes and 600 docking stations across Chicago. The company stands out by providing inclusive options like reclining bikes, hand tricycles, and cargo bikes, catering to riders with disabilities or those who cannot use standard two-wheeled bikes.
+
+Cyclistic offers three pricing plans:
+
+Single-ride passes
+Full-day passes
+Annual memberships
+
+Customers who purchase single-ride or full-day passes are classified as casual riders, while those with annual memberships are Cyclistic members.
+
+## Scenario
+
+The marketing team, led by Lily Moreno, aims to convert casual riders into annual members to ensure the company’s future success. To achieve this, the team needs to:
+
+Understand how casual riders and annual members use Cyclistic bikes differently.
+Develop data-driven marketing strategies to persuade casual riders to become members.
+
+## Key Questions
+
+How do annual members and casual riders use Cyclistic bikes differently?
+What insights can guide the design of a new marketing strategy?
+
+## Stakeholders
+
+Lily Moreno: Director of Marketing
+Cyclistic Executive Team   
+Cyclistic Marketing Analytics Team
+    
+## Step 2 : Prepare 
+The dataset includes 12 months of bike-share data for 2024, sourced from Divvy Trip Data. The data is organized in CSV files, with each file representing one month of activity.
+Tools Used
+
+Excel: For initial data inspection and validation & Query
+RStudio: For data cleaning, analysis and visualization
+Tableau : For data visualization 
+    
+## Data Cleaning Process
+
+  Installed necessary R packages (tidyverse, skimr, janitor, ggplot2, lubridate, etc.).
+
+  Imported and merged 12 monthly CSV files into a single data frame.
+
+  Checked for duplicates, missing values, and inconsistencies.
+
+  Added new columns using excel 
+
+  duration_trip: Calculated ride duration (ended_at - started_at).
+
+  day : Extracted the day of the week from started_at.
+
+  Saved the cleaned data as a new CSV file for analysis.
+    
+```{r install packages }
+#install.packages("tidyverse")
+#install.packages("skimr")
+#install.packages("janitor")
+#install.packages('ggplot2')
+#install.packages("hms")
+#install.packages("lubridate")
+#install.packages("hms")
+```
+
+## Step 3: Process
+Data Cleaning Highlights
+
+  Merged Data: Combined 12 monthly datasets into one dataframe with over 5 million rows.
+  Duplicates: No duplicates were found.
+  Blank Columns : Many columns had blanks and nulls which were deleted 
+  Negative Durations: Identified and excluded rides with negative durations (likely due to   data entry errors).
+  New Columns: Added duration_hours and day for further analysis
+  combining all the months to a single data frame df_2024
+## Loading library
+
+```{r load packages}
+library(tidyverse)
+library(dplyr)
+library(skimr)
+library(janitor)
+library(ggplot2)
+library(lubridate)
+library(hms)
+library(readr)
+
+```
+### Importing all the cleaned dataframes which are formated as CSV 
+
+```{r loading all files}
+jan_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_jan.csv")
+mar_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_mar.csv")
+feb_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_feb.csv")
+apr_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_apr.csv")
+may_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_maj.csv")
+jun_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_jun.csv")
+jul_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_juli.csv")
+aug_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_aug.csv")
+sep_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_sep.csv")
+oct_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_okt.csv")
+nov_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_nov.csv")
+dec_df <- read.csv("C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/df_dec.csv")
+```
+
+
+## Combine all the dataframes into one 
+
+```{r combining all data frames}
+df_2024 <- bind_rows(jan_df,feb_df,mar_df,apr_df,may_df,jun_df,jul_df,aug_df,sep_df,oct_df,nov_df,dec_df)
+glimpse(df_2024)
+```
+```{r check if merge worked}
+head(df_2024)
+```
+
+```{r check number of rows & Columns after merge}
+dim(df_2024)
+```
+
+```{r Check for Duplicates - There are no Duplicates}
+sum(duplicated(df_2024))
+```
+## Step 4: Analyze
+#### Key Insights
+
+Ride Duration:
+
+Average ride duration: ~11 minutes.
+Longest ride: 23 hours 46 minutes.
+Shortest ride: 0.039 seconds (likely a data error).
+  
+#### Popular Days:
+  
+Saturday had the highest number of rides, followed by Wednesday.
+Monday was the least popular day.
+
+#### Bike Types:
+
+Only electric bikes, electric scooters, and classic bikes were used in 2024.
+None of the inclusive bike options (e.g., reclining bikes, hand tricycles) were rented.
+
+#### Rider Types:
+
+Casual riders accounted for over 2 million rides.
+Members used bikes more frequently on weekdays eg wednesday, while casual riders          dominated weekends.
+
+## Plot 1 - Total riders 2024 
+  
+The first plot includes the total number of riders in 2024 compared by casual 
+bike riders and annual member 
+Here is a link for a more detailed version  [link](https://public.tableau.com/app/profile/taimur.hassan7268/viz/Total_i    ders2024/TotalRiders)
+![My Image](Total Riders.png)
+   
+## Plot 2 - Total riders per day 2024
+   
+The second plot shows the total number of rides by both casuals and members 
+in a bar chart in descending order
+[click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/Total_ridersperday/Ridesperday)
+![My Image](Rides per day.png)
+## Plot 3 - Casuals riders per day 2024 
+  
+This plot will showcase the total number of casual riders per day in year 2024
+[Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/Casualsday_2024/Casuals2024)
+![My Image](Casuals 2024.png)
+  
+## Plot 4 - Annual members riders per day 
+  
+This plot shows the sum of annual members in year 2024 [Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/Member_days2024/Members2024)
+![My Image](Members 2024.png)
+  
+## Plot 5 - Bikes Types usage 
+  
+This plot shows the different types of bikes used for rides taken during year 2024
+[Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/biketypesperday/Ridestypes)
+![My Image](Rides types.png)
+  
+## Plot 6 - Top Stations
+  
+This top showcase the top station used by riders in year 2024
+[Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/TopStations_17395357710120/Top15Stations)
+![My Image](Top15 Stations.png)
+## Plot 7 - Dashboard 
+  
+This plot shows a summary of the types of bikes used and which top stations were used during year 2024 [Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/topstations_biketype/Dashboard2)
+![My Image](Dashboard 2.png)
+  
+## Plot 8 - Dashboard 2 
+  
+This plot compares the total number of annual and causal riders by days in year 2024 and
+showcases which days the riders prefered to ride [Click](https://public.tableau.com/app/profile/taimur.hassan7268/viz/Member_casuals_2024/Dashboard1)
+![My Image](Dashboard 1.png)
+  
+## Step 5: Share
+
+
+All the plot that are used for visualization has been mentioned above 
+
+    
+
+## Deliverable
+
+A detailed RMarkdown notebook shared on Kaggle for public access
+Clear visualizations and key findings to support decision-making.
+ 
+## Step 6: Act
+
+Recommendations
+
+Promote Inclusive Bikes:
+
+Conduct surveys to understand why inclusive bikes (e.g., reclining bikes, hand tricycles) are underutilized.
+
+Offer discounts or promotions to encourage riders to try these options.
+
+Target Casual Riders:
+
+Introduce flexible membership plans (e.g., monthly subscriptions) to attract casual riders.
+
+Offer incentives, such as discounted annual memberships or bonus ride credits.
+
+Weekend Promotions:
+
+Launch weekend-specific promotions for casual riders at popular stations.
+
+Highlight the benefits of membership, such as cost savings and convenience.
+
+## Conclusion
+
+This analysis provides valuable insights into the differences between casual riders and annual members. By implementing targeted marketing strategies, Cyclistic can effectively convert casual riders into loyal members, driving long-term growth and success.
+Next Steps
+
+Share findings with the Cyclistic executive team for approval.
+
+Develop and test marketing campaigns based on the recommendations.
+
+Monitor the impact of new strategies and refine them as needed.
