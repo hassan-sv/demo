@@ -4,7 +4,7 @@ author: Taimur Hassan
 date: 2025-02-13
 output: html_document
 ---
-![thumbnail](https://github.com/hassan-sv/Project-Data-Analysis/blob/main/thumbnail.png)
+![Image](https://github.com/user-attachments/assets/22dc79a9-c6e2-4240-96e4-6b3335317f4c)
 
 
 ## About case study 
